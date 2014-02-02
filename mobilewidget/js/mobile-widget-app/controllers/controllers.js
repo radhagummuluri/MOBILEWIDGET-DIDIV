@@ -20,30 +20,139 @@ app.config(function($routeProvider) {
             })
     });
 
-//Main controller that loads the list of retetailer logos
+
+
+//Main controller that loads the list of retailer logos
 app.controller("mainController", function($scope, $http){
-    $scope.apiKey = "7597bd6e733aa5f30ccc8f1d52740624";
-    $scope.results = [];
-    $scope.init = function() {
-        var today = new Date();
-        var apiDate = today.getFullYear() + ("0" + (today.getMonth() + 1)).slice(-2) + "" + ("0" + today.getDate()).slice(-2);
-        $http.jsonp('http://api.trakt.tv/calendar/premieres.json/' + $scope.apiKey + '/' + apiDate + '/' + 30 + '/?callback=JSON_CALLBACK').success(function(data) {
-            console.log(data);
-            angular.forEach(data, function(value, index){
+    
+    $scope.retailers = [];
+    $scope.slides = [];
+    var scrollinterval = null;
+    
+    $scope.init = function() 
+    {
+        $scope.currentSlide = 1;
+        $scope.totalSlides = 0;
+        $scope.initialLoad = true;
+        $scope.autoslide = true;
 
-                var date = value.date;
+        $http.jsonp('http://api2.shoplocal.com/retail/5369d0c743bd59c2/2013.1/json/multiretailerpromotions?radius=100&siteid=1553&MultRetPromoSort=1&pageimagewidth=156&citystatezip=60601&callback=JSON_CALLBACK').success(function(data) {
+            console.log(data.Results);
 
-                angular.forEach(value.episodes, function(tvshow, index){
-
-                    tvshow.date = date; //Attach the full date to each episode
-                    $scope.results.push(tvshow);
-                });
+            var logosperpage = 6;
+            
+            angular.forEach(data.Results, function(retailer, index){
+                    $scope.retailers.push(retailer);
             });
+
+            for (var i=0; i<$scope.retailers.length; i+=logosperpage) {
+                var slide = $scope.retailers.slice(i,i+logosperpage);
+                $scope.slides.push(slide);
+            }
+
+            $scope.totalSlides = $scope.slides.length;
+
+            if($scope.autoslide)
+            {
+                autoslide();
+            }
 
         }).error(function(error) {
  
         });
     };
+
+    $scope.openHeroPromotion = function(retailerid)
+    {
+        //dispatch open event.
+    }
+
+
+    var autoslide = function()
+    {
+        if($scope.initialLoad && $scope.autoslide)
+        {
+           scrollinterval =  setInterval(function(){ 
+                    if($scope.currentSlide <= $scope.totalSlides)
+                    {
+                        $scope.currentSlide = $scope.currentSlide +1; 
+                        goAutoForward();                         
+                    }
+                    else
+                    {
+                        $scope.currentSlide = 1;
+                        $scope.myScroll['wrapper'].scrollToPage(0, 0);
+                    }
+
+                },2000);
+        }
+        else
+        {
+            clearInterval();
+        }
+    }
+
+    $scope.$parent.myScrollOptions = {
+            snap: true,
+            momentum: false,
+            hScrollbar: false,
+            onScrollEnd: function () {
+            } 
+        };
+
+    // expose refreshiScroll() function for ng-onclick or other meth
+    $scope.refreshiScroll = function ()
+    {
+        $scope.$parent.myScroll['wrapper'].refresh();
+    };
+
+
+    var goAutoForward = function () {
+        if($scope.currentSlide <= $scope.totalSlides)
+        {
+            clearInitialLoad();
+            $scope.myScroll['wrapper'].scrollToPage('next', 0);
+        }
+    };
+
+    var goAutoBack = function () {
+        if($scope.currentSlide > 1)
+        {
+            clearInitialLoad();
+            $scope.myScroll['wrapper'].scrollToPage('prev', 0);
+        }
+    };
+
+    $scope.goForward = function () {
+        $scope.autoslide = false;
+        clearInterval(scrollinterval);
+        scrollinterval = null;
+        if($scope.currentSlide < $scope.totalSlides)
+        {
+            clearInitialLoad();
+            $scope.currentSlide = $scope.currentSlide +1; 
+            $scope.myScroll['wrapper'].scrollToPage('next', 0);
+        }
+    };
+
+    $scope.goBack = function () {
+        $scope.autoslide = false;
+        clearInterval(scrollinterval);
+        scrollinterval = null;
+        if($scope.currentSlide > 1)
+        {
+            $scope.currentSlide = $scope.currentSlide - 1; 
+            clearInitialLoad();
+            $scope.myScroll['wrapper'].scrollToPage('prev', 0);
+        }
+    };
+
+    var clearInitialLoad = function(){
+            if($scope.initialLoad)
+            {
+                $scope.initialLoad = false;
+            }
+    }
 });
 
 //Retailer controller that loads promotions based on the retailer.

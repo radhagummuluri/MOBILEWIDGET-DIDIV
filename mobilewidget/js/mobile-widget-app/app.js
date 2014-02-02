@@ -1,1 +1,1 @@
-var app = angular.module('MobileWidgetApp',[]);
+var app = angular.module('MobileWidgetApp',['ng-iscroll']);
