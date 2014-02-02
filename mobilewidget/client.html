@@ -2,7 +2,6 @@
 <meta data-post-id="" data-scope-site-id="59104" data-site-id="59104" data-page-user-id="54" data-page-key="Wjbgn4PgNqHF" data-page-title="Home" id="gumiyoSitePage">
 <meta content="no-cache" http-equiv="Cache-Control">
 <meta content="NO-CACHE" http-equiv="PRAGMA">
-<meta content="a5f1841eaca5c9226f847e20733b56c693dde424" name="microid">
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
 <meta content="width=1024" name="viewport">
 <title>Chicago Tribune - Home</title>
@@ -48,15 +47,7 @@ div#wapFooter {
     <link media="all" type="text/css" rel="stylesheet" href="//tgumiyo.s3.amazonaws.com/TribProd-sitestyle/59104/1311006406763.gz.css">
     <link href="http://timg.gumiyo.com/5/54/media/SPG-ct_mobile_icon.png-obj1320869938179.png" rel="shortcut icon">
     <link href="http://timg.gumiyo.com/5/54/media/SPG-ct_mobile_icon.png-obj1320869938179.png" rel="apple-touch-icon">
-    <script async="" src="http://b.scorecardresearch.com/beacon.js"></script><script src="http://edge.quantserve.com/quant.js" async="" type="text/javascript"></script><script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-<div class="logoHeader"><script>
-   var _comscore = _comscore || []; _comscore.push({ c1: "2", c2: "6036462" }); (function() {
-   var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
-   s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
-   el.parentNode.insertBefore(s, el); })();
-</script>
-<noscript>
-   &lt;img src="http://b.scorecardresearch.com/p?c1=2&amp;c2=6036462&amp;c4=http%3A%2F%2Fmobile.chicagotribune.com%2Fs.p%3Fm%3Db%26sId%3D54" /&gt; </noscript>
+<div class="logoHeader">
 <table width="100%">
     <tbody><tr>
         <td width="48%">
@@ -78,24 +69,6 @@ div#wapFooter {
 					<a href="http://mobile.chicagotribune.com/s.p?m=b&amp;sId=54&amp;_com_favorites_expanded=1">Favorites</a>
 				</div>
 			<div class="clear"></div>
-		<script type="text/javascript">
-		(function($) {
-			$(function() {
-				$('.component.sectionheader .sectionselector').click(function(event) {
-					event.preventDefault();
-					$('.component.favorites').hide();
-					$('.component.sections').toggle();
-				});
-				$('.component.sectionheader .favoritesselector').click(function(event) {
-					event.preventDefault();
-					$('.component.sections').hide();
-					$('.component.favorites').toggle();
-				});
-
-			});
-		})(jQuery);
-
-		</script>
 	</div>
 	</div><div><div style="display: none;" data-favcookiename="tribune_54_favorites" class="component sections">
 	<div class="column-one">
@@ -144,102 +117,7 @@ div#wapFooter {
 				</div>
 			<div class="clear"></div>
 
-	<script type="text/javascript">
-	(function($) {
-	 	var favcookiename = $('.component.sections').attr('data-favcookiename');
 
-		favorites = {
-			remove: function(catId) {
-				var cookie = $.cookies.get(favcookiename);
-				if(cookie != null) {
-					var records = String(cookie).split('__');
-					var newValues = [];
-					for(var idx in records) {
-						var record = records[idx];
-						var fields = String(record).split(":");
-						if(fields[1] != catId) {
-							newValues[newValues.length] = record;
-						}	
-					}
-					newCookie = newValues.join('__');
-					$.cookies.set(favcookiename, newCookie);
-
-					// Update sections component
-					var section = $('div.component.sections li a[data-catid="' + catId + '"]').parents('li:first');
-					if(section.length) {
-						section.find('a.favoritedel:first').hide();
-						section.find('a.favoriteadd:first').show();
-					}
-					// Update favorites component
-					if($('div.component.favorites').length &gt; 0) {
-						var favorite = $('div.component.favorites li.favorite a[data-catid="' + catId + '"]').parents('li:first');
-						favorite.remove();
-						if($('div.component.favorites li').length == 0) {
-							$('div.component.favorites .emptyfavorites').show();
-						}
-					}
-				}
-			},
-			add: function(name, catId) {
-				var cookie = $.cookies.get(favcookiename);
-				var newVal = name + ":" + catId;
-				var entry = $(this).parents('li:first');
-				if(cookie == null) {
-					$.cookies.set(favcookiename, newVal);
-				}
-				else if(! String(cookie).match(newVal)) {
-					if(cookie.length) {
-						cookie = cookie + "__" + newVal;
-					}
-					else {
-						cookie = newVal;
-					}
-					$.cookies.set(favcookiename, cookie);
-				}
-				// Update sections component
-				var section = $('div.component.sections li a[data-catid="' + catId + '"]').parents('li:first');
-				if(section.length) {
-					section.find('a.favoritedel:first').show();
-					section.find('a.favoriteadd:first').hide();
-				}
-				// Update favorites component
-				if($('div.component.favorites').length &gt; 0) {
-					$('div.component.favorites .emptyfavorites').hide();
-					// Add favorite
-					var targetUrl = $('.component.favorites').attr('data-targeturl');
-					var html = '&lt;li class="favorite"&gt;&lt;div class="favoritename"&gt;&lt;a href="' + targetUrl + '&amp;amp;catId=' + catId + '"&gt;' + name + '&lt;/a&gt;&lt;/div&gt;&lt;a href="#" data-catid="" class="favoritedel"&gt;&lt;img src="http://timg.gumiyo.com/5/54/media/SPG-icon-star-closed.jpg-obj1302125378627.jpeg" /&gt;&lt;/a&gt;&lt;/li&gt;';
-					var el = $(html);
-					$('div.component.favorites ul').append(el);
-					$('div.component.favorites ul li:last a.favoritedel').click(function(event) {
-						event.preventDefault();
-						var catId = $(this).attr('data-catid');
-						favorites.remove(catId);
-					});
-					return;
-				}
-
-			}
-		};
-
-		$(function() {
-			$('.component.sections li a.favoriteadd').click(function(event) {
-				event.preventDefault();
-				var catId = $(this).attr('data-catid');
-				var name = $(this).attr('data-name');
-				favorites.add(name, catId);
-
-				return;
-			});
-			$('.component.sections li a.favoritedel').click(function(event) {
-				event.preventDefault();
-				var catId = $(this).attr('data-catid');
-				favorites.remove(catId);
-				return;
-			});
-		});
-	})(jQuery);
-
-	</script>
 	</div>
 </div><div><div style="display: none;" data-targeturl="/s.p?sId=54&amp;p=XxSYQXu6aC12" class="component favorites">
 	<div class="emptyfavorites">
@@ -247,18 +125,7 @@ div#wapFooter {
 	</div>
 	<ul class="favoriteslist">
 		</ul>
-	<script type="text/javascript">
-	(function($) {
-		$(function() {
-			$('div.component.favorites li.favorite .favoritedel').click(function(event) {
-				event.preventDefault();
-				var catId = $(this).attr('data-catid');
-				favorites.remove(catId);	
-				return;
-			});
-		});
-	})(jQuery);
-	</script>
+	
 	</div>
 </div><div>&nbsp;</div>
         </div><div></div><div></div><div>&nbsp;</div>
@@ -678,5 +545,5 @@ by Zip Code (e.g. 55555)
 </div>
 </div>
  </body></html>
-<script type="text/javascript" src="http://0391c7f.netsolhost.com/js/shoplocalmobilescript.js?height=46;width=550;top=0;left=0"></script>
+<script type="text/javascript" src="http://localhost/js/shoplocalmobilescript.js?height=46;width=550;top=0;left=0"></script>
 </html>

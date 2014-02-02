@@ -27,7 +27,7 @@ app.controller("mainController", function($scope, $http){
     
     $scope.retailers = [];
     $scope.slides = [];
-    var scrollinterval = null;
+    var _scrollinterval = null;
     
     $scope.init = function() 
     {
@@ -62,9 +62,15 @@ app.controller("mainController", function($scope, $http){
         });
     };
 
-    $scope.openHeroPromotion = function(retailerid)
+    $scope.$on('$viewContentLoaded', function(){
+
+        var test = "test";
+
+    });
+
+    $scope.openHeroPromotion = function(index, retailerid)
     {
-        //dispatch open event.
+        //win.postMessage('event dispatched','http://localhost');
     }
 
 
@@ -72,7 +78,7 @@ app.controller("mainController", function($scope, $http){
     {
         if($scope.initialLoad && $scope.autoslide)
         {
-           scrollinterval =  setInterval(function(){ 
+           _scrollinterval =  setInterval(function(){ 
                     if($scope.currentSlide <= $scope.totalSlides)
                     {
                         $scope.currentSlide = $scope.currentSlide +1; 
@@ -125,8 +131,8 @@ app.controller("mainController", function($scope, $http){
 
     $scope.goForward = function () {
         $scope.autoslide = false;
-        clearInterval(scrollinterval);
-        scrollinterval = null;
+        clearInterval(_scrollinterval);
+        _scrollinterval = null;
         if($scope.currentSlide < $scope.totalSlides)
         {
             clearInitialLoad();
@@ -137,8 +143,8 @@ app.controller("mainController", function($scope, $http){
 
     $scope.goBack = function () {
         $scope.autoslide = false;
-        clearInterval(scrollinterval);
-        scrollinterval = null;
+        clearInterval(_scrollinterval);
+        _scrollinterval = null;
         if($scope.currentSlide > 1)
         {
             $scope.currentSlide = $scope.currentSlide - 1; 

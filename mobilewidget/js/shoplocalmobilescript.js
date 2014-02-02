@@ -10,8 +10,8 @@ window.jq$ = jQuery.noConflict(true);
 
 var $ = window.jq$;
 
-$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.event.js"></script>');
-$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.events.js"></script>');
+//$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.event.js"></script>');
+//$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.events.js"></script>');
 
 
 var scripts = document.getElementsByTagName('script');
@@ -19,7 +19,9 @@ var myScript = '';
 
 for(var i=0;i<scripts.length;i++)
 {
-	if(scripts[i].src.contains("shoplocalmobilescript"))
+	var scripttag = '';
+	scripttag  = scripts[i].src.toString();
+	if(scripttag.indexOf("shoplocalmobilescript")>-1)
 		myScript = scripts[i]; 
 }
 
@@ -41,21 +43,71 @@ function parseQuery ( query ) {
    }
    return Params;
 }
-
+//Create the mobile widget iframe.
 var params = parseQuery(queryString);
-var $newdiv1 = $( "<iframe id='object1'/>" );
+var $newdiv1 = $( "<iframe id='mobilewidget'/>" );
 $newdiv1.attr('src', 'http://localhost');
 $newdiv1.css( "height", params['height']+"px");
-$newdiv1.attr('frameBorder','0')
+$newdiv1.attr('frameBorder','0');
 $newdiv1.css( "width", params['width']+"px");
 $newdiv1.css("top",params['top']+"px");
 $newdiv1.css("left",params['left']+"px");
 $( "body" ).prepend($newdiv1);
 
-/*var body   = document.body || document.getElementsByTagName('body')[0];
-var ifrm = document.createElement("IFRAME");
-ifrm.setAttribute("src", "http://localhost/");
-ifrm.style.width = 640+"px";
-ifrm.style.height = 480+"px";
-body.insertBefore(ifrm,body.childNodes[0]);
-*/
+//Create the div for hero promotion.
+
+var $heroPromotion = $( "<div id='hero-promotion'/>" );
+$heroPromotion.css("position","absolute");
+$heroPromotion.css( "height", "500px");
+$heroPromotion.css( "width", params['width']+"px");
+$heroPromotion.css("top",params['height']+"px");
+$heroPromotion.css("left",params['left']+"px");
+$heroPromotion.css("border","5px");
+$heroPromotion.css("background-color","blue");
+$( "body" ).append($heroPromotion);
+($heroPromotion).hide();
+
+var $mobilewidgetheropromo = $( "<iframe id='mobilewidget-heropromo'/>" );
+$mobilewidgetheropromo.css( "height", params['height']+"px");
+$mobilewidgetheropromo.attr('frameBorder','0');
+$mobilewidgetheropromo.css( "width", params['width']+"px");
+$mobilewidgetheropromo.css("top",params['top']+"px");
+$mobilewidgetheropromo.css("left",params['left']+"px");
+($heroPromotion).html($mobilewidgetheropromo);
+
+
+var iframe = document.getElementById('mobilewidget');
+    iframe = iframe.contentWindow || iframe.contentDocument;
+    if (iframe.document) iframe = iframe.document;
+    var _timer=setInterval(function()
+    {
+    	var b = $("#mobilewidget").contents().find('body')
+	
+		b.contents().find(".action-retailer").length > 0
+		{
+			clearInterval(_timer);
+			//loaded
+
+			//$("#mobilewidget").contents().find('body').contents().find(".action-retailer")
+			b.contents().on("click",".action-retailer",function(e){
+				//alert('hello');
+				var retailerid = e.target.getAttribute("data-retailerid");
+				($heroPromotion).html();
+				//$mobilewidgetheropromo.html();
+				$mobilewidgetheropromo.attr('src', 'http://localhost/#/retailer:'+retailerid);
+				($heroPromotion).html($mobilewidgetheropromo);
+				$heroPromotion.show();
+			})
+		}
+
+    }, 1000)
+
+
+
+/*
+var iframe = document.getElementById('mobilewidget');
+var b = $("#mobilewidget").contents().find('body');
+b.contents().on("click",".action-retailer",function(e){
+				alert('hello');
+			})
+			*/
