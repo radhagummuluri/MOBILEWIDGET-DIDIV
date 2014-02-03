@@ -1,8 +1,11 @@
-body {
+
+html, body {
+    margin: 0; padding: 0; border-width: 0; height: 100%;
     padding-left: 0px !important;
     padding-right: 0px !important;
     line-height: 0px !important;
     font-size:12px !important;
+    overflow: hidden;
 }
 
 #CarouselWrapper {
@@ -19,7 +22,6 @@ body {
 
 
 .carousel-control {
-    
     background-color: transparent;
     background-image: url("../img/MeijerWidget_Sprite.png");
     background-repeat: no-repeat;
@@ -58,5 +60,28 @@ body {
 }
 
 .controls{
-    width:360px;
+    width:300px;
+}
+
+.hero-controls
+{
+    postion:absolute;
+    width:300px;
+    heigh:25px;
+    top:0px;
+    z-index: 100;
+}
+
+
+
+.heroPromotion{
+    postion:absolute;
+    line-height: 20px;    
+}
+
+#PromotionPageCarouselWrapper{
+    position: relative;
+    width: 300px;
+    z-index: 100;
+    top:20px;
 }

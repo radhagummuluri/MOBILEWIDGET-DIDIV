@@ -10,25 +10,9 @@ window.jq$ = jQuery.noConflict(true);
 
 var $ = window.jq$;
 
-//$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.event.js"></script>');
-//$('head').append('<script type="text/javascript" src="http://localhost/js/events/sl.sc.events.js"></script>');
+//$('head').append('<script type="text/javascript" src="http://0391c7f.netsolhost.com/js/bindevents.js"></script>');
 
-
-var scripts = document.getElementsByTagName('script');
-var myScript = '';
-
-for(var i=0;i<scripts.length;i++)
-{
-	var scripttag = '';
-	scripttag  = scripts[i].src.toString();
-	if(scripttag.indexOf("shoplocalmobilescript")>-1)
-		myScript = scripts[i]; 
-}
-
-var queryString = myScript.src.replace(/^[^\?]+\??/,'');
-
-var params = parseQuery( queryString );
-
+//Get the query params
 function parseQuery ( query ) {
    var Params = new Object ();
    if ( ! query ) return Params; // return empty object
@@ -43,10 +27,27 @@ function parseQuery ( query ) {
    }
    return Params;
 }
-//Create the mobile widget iframe.
+
+//look for the correct script for shoplocalmobilescript so that we can get the parameters from the query string.
+var scripts = document.getElementsByTagName('script');
+var myScript = '';
+for(var i=0;i<scripts.length;i++)
+{
+	var scripttag = '';
+	scripttag  = scripts[i].src.toString();
+	if(scripttag.indexOf("shoplocalmobilescript")>-1)
+		myScript = scripts[i]; 
+}
+
+var queryString = myScript.src.replace(/^[^\?]+\??/,'');
+
+var params = parseQuery( queryString );
+
+
+//Create the mobile widget iframe. This contains the angular view for retailer list.
 var params = parseQuery(queryString);
 var $newdiv1 = $( "<iframe id='mobilewidget'/>" );
-$newdiv1.attr('src', 'http://localhost');
+$newdiv1.attr('src', 'http://0391c7f.netsolhost.com');
 $newdiv1.css( "height", params['height']+"px");
 $newdiv1.attr('frameBorder','0');
 $newdiv1.css( "width", params['width']+"px");
@@ -54,8 +55,8 @@ $newdiv1.css("top",params['top']+"px");
 $newdiv1.css("left",params['left']+"px");
 $( "body" ).prepend($newdiv1);
 
-//Create the div for hero promotion.
 
+//Create the div for hero promotion.
 var $heroPromotion = $( "<div id='hero-promotion'/>" );
 $heroPromotion.css("position","absolute");
 $heroPromotion.css( "height", "500px");
@@ -63,46 +64,61 @@ $heroPromotion.css( "width", params['width']+"px");
 $heroPromotion.css("top",params['height']+"px");
 $heroPromotion.css("left",params['left']+"px");
 $heroPromotion.css("border","5px");
-$heroPromotion.css("background-color","blue");
 $( "body" ).append($heroPromotion);
 ($heroPromotion).hide();
 
+//Create the iframe inside the hero promotion div. This will include the angular view for retailer.html
 var $mobilewidgetheropromo = $( "<iframe id='mobilewidget-heropromo'/>" );
-$mobilewidgetheropromo.css( "height", params['height']+"px");
+$mobilewidgetheropromo.css( "height", "100%");
+$mobilewidgetheropromo.css( "width", "100%");
 $mobilewidgetheropromo.attr('frameBorder','0');
-$mobilewidgetheropromo.css( "width", params['width']+"px");
+$mobilewidgetheropromo.css( "100%");
 $mobilewidgetheropromo.css("top",params['top']+"px");
 $mobilewidgetheropromo.css("left",params['left']+"px");
 ($heroPromotion).html($mobilewidgetheropromo);
 
-
 var iframe = document.getElementById('mobilewidget');
-    iframe = iframe.contentWindow || iframe.contentDocument;
-    if (iframe.document) iframe = iframe.document;
-    var _timer=setInterval(function()
-    {
-    	var b = $("#mobilewidget").contents().find('body')
-	
-		b.contents().find(".action-retailer").length > 0
-		{
-			clearInterval(_timer);
-			//loaded
+iframe = iframe.contentWindow || iframe.contentDocument;
+if (iframe.document) iframe = iframe.document;
+var _timer=setInterval(function()
+{
+	var b = $("#mobilewidget").contents().find('body')
 
-			//$("#mobilewidget").contents().find('body').contents().find(".action-retailer")
-			b.contents().on("click",".action-retailer",function(e){
-				//alert('hello');
-				var retailerid = e.target.getAttribute("data-retailerid");
-				($heroPromotion).html();
-				//$mobilewidgetheropromo.html();
-				$mobilewidgetheropromo.attr('src', 'http://localhost/#/retailer:'+retailerid);
-				($heroPromotion).html($mobilewidgetheropromo);
-				$heroPromotion.show();
-			})
-		}
-
-    }, 1000)
+	b.contents().find(".action-retailer").length > 0
+	{
+		//loaded
+		clearInterval(_timer);
 
 
+		// bind events for the click events on retailer logos.		
+		b.contents().on("click",".action-retailer",function(e){
+			var retailerid = e.target.getAttribute("data-retailerid");
+			var storeid = e.target.getAttribute("data-storeid");
+			var promotioncode = e.target.getAttribute("data-heropromocode");
+			
+			$heroPromotion.html();
+			$mobilewidgetheropromo.attr('src', 'http://0391c7f.netsolhost.com/#/retailer:'+retailerid+"/promotioncode:"+promotioncode+"/storeid:"+storeid);
+			
+			$heroPromotion.html($mobilewidgetheropromo);
+			$heroPromotion.show();
+/*
+			var _timerHeroPromo=setInterval(function()
+			{
+					var heroPromotionFrame = $("#mobilewidget").contents().find('body');
+					if(heroPromotionFrame.contents().find("closeControl").length>0)
+					{
+						clearInterval(_timerHeroPromo);	
+						heroPromotionFrame.contents.on("click",".closeControl",function(e){
+							$heroPromotion.html();
+							$heroPromotion.close();
+						})
+					}		
+			},1000);
+*/
+		})
+	}
+
+}, 1000)
 
 /*
 var iframe = document.getElementById('mobilewidget');
